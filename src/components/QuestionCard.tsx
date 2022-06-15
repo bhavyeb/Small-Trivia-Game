@@ -22,12 +22,10 @@ const QuestionCard: React.FC<Props> = ({
     <p className="number">
       Question: {questionNr} / {totalQuestions}
     </p>
-    <p dangerouslySetInnerHTML={{__html: question}} />
+    <p className="question" dangerouslySetInnerHTML={{__html: question}} />
     <div>
-      <input type="text" onKeyUp={callback}/>
-      {/* <button disabled={userAnswer} onClick={callback1}>
-        Check
-      </button> */}
+      <input type="text" id="ans" onKeyUp={callback}/>
+      <input type="submit" id="submit" value="submit" />
     </div>
   </div>
 );

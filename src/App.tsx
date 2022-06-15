@@ -4,6 +4,9 @@ import { fetchQuizQuestions, Question } from "./API";
 // Components
 import QuestionCard from "./components/QuestionCard";
 
+// Styles
+import { GlobalStyle, Wrapper } from './App.styles';
+
 export type AnswerObject = {
   question: string;
   answer: string;
@@ -21,7 +24,7 @@ const App = () => {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
-  console.log(questions);
+  // console.log(questions);
 
   const startTrivia = async () => {
     setLoading(true);
@@ -44,11 +47,25 @@ const App = () => {
 
       // Check if the answer is correct or not
       const correct = answer === questions[number].answer;
+      // console.log(answer, correct);
 
-      // Increase score if answer is correct
-      if (correct) {
-        setScore((prev) => prev + 1);
-      }
+      const mc = document.getElementById("submit");
+      mc?.addEventListener("click", () => {
+        // Increase score if answer is correct
+        if (correct) {
+          const p: HTMLElement = document.getElementById(
+            "result"
+          ) as HTMLElement;
+          p.innerHTML = "Correct Answer";
+          setScore((prev) => prev + 1);
+        } else {
+          const p: HTMLElement = document.getElementById(
+            "result"
+          ) as HTMLElement;
+          p.innerHTML = "Incorrect Answer";
+        }
+        nextQuestion();
+      });
 
       // Save answer in array of AnswerObjects
       const answerObject = {
@@ -63,6 +80,11 @@ const App = () => {
   };
 
   const nextQuestion = () => {
+    const ans: HTMLInputElement = document.getElementById(
+      "ans"
+    ) as HTMLInputElement;
+    ans.value = "";
+
     // Moving to next question until we are at the last question
     const nextQuestion = number + 1;
 
@@ -71,34 +93,32 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <h1>Trivia Game</h1>
-      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-        <button className="start" onClick={startTrivia}>
-          Start
-        </button>
-      ) : null}
-      {!gameOver ? <p className="score">Score: {score}</p> : null}
-      {loading ? <p>Loading Questions...</p> : null}
-      {!loading && !gameOver && (
-        <QuestionCard
-          questionNr={number + 1}
-          totalQuestions={TOTAL_QUESTIONS}
-          question={questions[number].question}
-          answer={questions[number].answer}
-          userAnswer={userAnswers ? userAnswers[number] : undefined}
-          callback={checkAnswer}
-        />
-      )}
-      {!loading &&
-      !gameOver &&
-      // userAnswers.length === number + 1 &&
-      userAnswers.length !== TOTAL_QUESTIONS - 1 ? (
-        <button className="next" onClick={nextQuestion}>
-          Next
-        </button>
-      ) : null}
-    </div>
+    <>
+      <GlobalStyle />
+      <Wrapper>
+      {/* <div className="App"> */}
+        <h1>Trivia Game</h1>
+        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+          <button className="start" onClick={startTrivia}>
+            Start
+          </button>
+        ) : null}
+        {/* {!gameOver ? <p className="score">Score: {score}</p> : null} */}
+        {loading ? <p>Loading Questions...</p> : null}
+        {!loading && !gameOver && (
+          <QuestionCard
+            questionNr={number + 1}
+            totalQuestions={TOTAL_QUESTIONS}
+            question={questions[number].question}
+            answer={questions[number].answer}
+            userAnswer={userAnswers ? userAnswers[number] : undefined}
+            callback={checkAnswer}
+          />
+        )}
+        <p id="result"></p>
+      {/* </div> */}
+      </Wrapper>
+    </>
   );
 };
 
