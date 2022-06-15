@@ -57,12 +57,14 @@ const App = () => {
             "result"
           ) as HTMLElement;
           p.innerHTML = "Correct Answer";
+          p.style.color = "green";
           setScore((prev) => prev + 1);
         } else {
           const p: HTMLElement = document.getElementById(
             "result"
           ) as HTMLElement;
           p.innerHTML = "Incorrect Answer";
+          p.style.color = "red";
         }
         nextQuestion();
       });
