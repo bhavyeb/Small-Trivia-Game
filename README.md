@@ -1,4 +1,6 @@
-Problem statement:
+# Small Trivia Game
+
+## Problem statement:
 Create a small Trivia game.
 Get questions and answers from this API - https://jservice.io/api/random
 Show the user the question and keep the answer in memory. Users will enter answers in a text field.
